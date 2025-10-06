@@ -41,9 +41,9 @@
 .cart-item {
   display: grid;
   grid-template-columns: 1fr auto auto;
-  gap: 1rem;
+  gap: 1.5rem;
   align-items: center;
-  padding: 0.75rem;
+  padding: 0.875rem 1rem;
   background-color: #f9f9f9;
   border-radius: 4px;
   position: relative;
@@ -53,23 +53,26 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  min-width: 0;
 }
 
 .cart-item-name {
   color: #333;
   font-size: 0.938rem;
   font-weight: 500;
+  line-height: 1.4;
 }
 
 .cart-item-options {
   color: #666;
-  font-size: 0.875rem;
+  font-size: 0.813rem;
   font-weight: 400;
 }
 
 .cart-item-quantity {
   color: #666;
-  font-size: 0.875rem;
+  font-size: 0.813rem;
+  font-weight: 500;
 }
 
 .cart-item-price {
@@ -81,13 +84,13 @@
 }
 
 .remove-item-btn {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border: none;
   background-color: #ff5252;
   color: white;
   border-radius: 50%;
-  font-size: 1rem;
+  font-size: 0.875rem;
   cursor: pointer;
   display: flex;
   align-items: center;

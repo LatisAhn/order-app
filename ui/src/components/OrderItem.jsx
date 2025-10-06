@@ -15,7 +15,7 @@ function OrderItem({ order, onStatusChange }) {
       case 'pending':
         return (
           <button 
-            className="status-btn pending"
+            className="status-btn status-pending"
             onClick={() => onStatusChange(order.id, 'in_progress')}
           >
             제조 시작
@@ -24,7 +24,7 @@ function OrderItem({ order, onStatusChange }) {
       case 'in_progress':
         return (
           <button 
-            className="status-btn in-progress"
+            className="status-btn status-in-progress"
             onClick={() => onStatusChange(order.id, 'completed')}
           >
             제조 완료
@@ -32,7 +32,9 @@ function OrderItem({ order, onStatusChange }) {
         )
       case 'completed':
         return (
-          <span className="status-badge completed">완료</span>
+          <button className="status-btn status-completed" disabled>
+            완료
+          </button>
         )
       default:
         return null

@@ -1,80 +1,34 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import MenuCard from '../components/MenuCard'
 import ShoppingCart from '../components/ShoppingCart'
+import { menuAPI, orderAPI } from '../config/api'
 import './OrderPage.css'
 
-// 임시 메뉴 데이터
-const MENU_DATA = [
-  {
-    id: 1,
-    name: '아메리카노(ICE)',
-    price: 4000,
-    description: '간단한 설명...',
-    imageUrl: '',
-    options: [
-      { id: 'shot', name: '샷 추가', price: 500 },
-      { id: 'syrup', name: '시럽 추가', price: 0 }
-    ]
-  },
-  {
-    id: 2,
-    name: '아메리카노(HOT)',
-    price: 4000,
-    description: '간단한 설명...',
-    imageUrl: '',
-    options: [
-      { id: 'shot', name: '샷 추가', price: 500 },
-      { id: 'syrup', name: '시럽 추가', price: 0 }
-    ]
-  },
-  {
-    id: 3,
-    name: '카페라떼',
-    price: 5000,
-    description: '간단한 설명...',
-    imageUrl: '',
-    options: [
-      { id: 'shot', name: '샷 추가', price: 500 },
-      { id: 'syrup', name: '시럽 추가', price: 0 }
-    ]
-  },
-  {
-    id: 4,
-    name: '카푸치노',
-    price: 5000,
-    description: '부드러운 우유 거품이 일품',
-    imageUrl: '',
-    options: [
-      { id: 'shot', name: '샷 추가', price: 500 },
-      { id: 'syrup', name: '시럽 추가', price: 0 }
-    ]
-  },
-  {
-    id: 5,
-    name: '바닐라 라떼',
-    price: 5500,
-    description: '달콤한 바닐라 향',
-    imageUrl: '',
-    options: [
-      { id: 'shot', name: '샷 추가', price: 500 },
-      { id: 'whip', name: '휘핑 추가', price: 500 }
-    ]
-  },
-  {
-    id: 6,
-    name: '카라멜 마끼아또',
-    price: 6000,
-    description: '카라멜의 달콤함과 에스프레소의 조화',
-    imageUrl: '',
-    options: [
-      { id: 'shot', name: '샷 추가', price: 500 },
-      { id: 'whip', name: '휘핑 추가', price: 500 }
-    ]
-  }
-]
-
 function OrderPage() {
+  const [menuData, setMenuData] = useState([])
   const [cartItems, setCartItems] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  // 메뉴 데이터 로드
+  useEffect(() => {
+    const fetchMenus = async () => {
+      try {
+        setLoading(true)
+        const response = await menuAPI.getAll()
+        if (response.success) {
+          setMenuData(response.data)
+        }
+      } catch (err) {
+        console.error('메뉴 로드 실패:', err)
+        setError('메뉴를 불러오는데 실패했습니다.')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchMenus()
+  }, [])
 
   const handleAddToCart = (menuWithOptions) => {
     const optionNames = menuWithOptions.selectedOptions.map(opt => opt.name)
@@ -110,10 +64,36 @@ function OrderPage() {
     }
   }
 
-  const handleOrder = () => {
-    // 주문 처리 (추후 API 연동)
-    console.log('주문 내역:', cartItems)
-    setCartItems([])
+  const handleOrder = async () => {
+    try {
+      // API 형식에 맞게 주문 데이터 변환
+      const orderItems = cartItems.map(item => {
+        // 단가 계산 (총 금액을 수량으로 나눔)
+        const unitPrice = item.totalPrice / item.quantity
+        
+        return {
+          menuId: item.menuId,
+          menuName: item.menuName,
+          quantity: item.quantity,
+          unitPrice: unitPrice,
+          options: item.optionNames.map((optName, idx) => ({
+            optionId: idx + 1, // 실제로는 option ID를 저장해야 함
+            optionName: optName,
+            optionPrice: 0 // 실제 옵션 가격을 저장해야 함
+          }))
+        }
+      })
+
+      const response = await orderAPI.create({ items: orderItems })
+      
+      if (response.success) {
+        alert(`주문이 완료되었습니다!\n주문번호: ${response.data.orderId}`)
+        setCartItems([])
+      }
+    } catch (err) {
+      console.error('주문 실패:', err)
+      alert(err.message || '주문 처리 중 오류가 발생했습니다.')
+    }
   }
 
   const handleRemoveItem = (index) => {
@@ -121,10 +101,26 @@ function OrderPage() {
     setCartItems(newCartItems)
   }
 
+  if (loading) {
+    return (
+      <div className="order-page">
+        <p className="loading-message">메뉴를 불러오는 중...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="order-page">
+        <p className="error-message">{error}</p>
+      </div>
+    )
+  }
+
   return (
     <div className="order-page">
       <div className="menu-grid">
-        {MENU_DATA.map(menu => (
+        {menuData.map(menu => (
           <MenuCard 
             key={menu.id} 
             menu={menu} 

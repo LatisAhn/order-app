@@ -4,6 +4,13 @@
   padding: 2rem;
 }
 
+.loading-message {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.125rem;
+  color: #666;
+}
+
 .section-title {
   font-size: 1.25rem;
   font-weight: 600;

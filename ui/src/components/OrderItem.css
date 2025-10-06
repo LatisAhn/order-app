@@ -44,44 +44,53 @@
 }
 
 .status-btn {
-  padding: 0.5rem 1.5rem;
+  padding: 0.6rem 1.75rem;
   border: none;
   border-radius: 4px;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.status-btn.pending {
+.status-btn.status-pending {
   background-color: #2196F3;
   color: white;
 }
 
-.status-btn.pending:hover {
+.status-btn.status-pending:hover {
   background-color: #1976D2;
+  box-shadow: 0 4px 6px rgba(33, 150, 243, 0.3);
 }
 
-.status-btn.in-progress {
+.status-btn.status-pending:active {
+  transform: translateY(1px);
+}
+
+.status-btn.status-in-progress {
   background-color: #FF9800;
   color: white;
 }
 
-.status-btn.in-progress:hover {
+.status-btn.status-in-progress:hover {
   background-color: #F57C00;
+  box-shadow: 0 4px 6px rgba(255, 152, 0, 0.3);
 }
 
-.status-badge {
-  padding: 0.5rem 1.5rem;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  font-weight: 500;
+.status-btn.status-in-progress:active {
+  transform: translateY(1px);
 }
 
-.status-badge.completed {
+.status-btn.status-completed {
   background-color: #4CAF50;
   color: white;
+  cursor: default;
+}
+
+.status-btn.status-completed:hover {
+  background-color: #4CAF50;
 }
 
 @media (max-width: 768px) {

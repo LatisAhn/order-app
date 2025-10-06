@@ -40,8 +40,10 @@ function ShoppingCart({ cartItems, onOrder, onRemoveItem }) {
                       {item.optionNames.length > 0 && (
                         <span className="cart-item-options"> ({item.optionNames.join(', ')})</span>
                       )}
+                      {item.quantity > 1 && (
+                        <span className="cart-item-quantity"> x {item.quantity}</span>
+                      )}
                     </span>
-                    <span className="cart-item-quantity">x {item.quantity}</span>
                   </div>
                   <span className="cart-item-price">{item.totalPrice.toLocaleString()}원</span>
                   <button 

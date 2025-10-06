@@ -1,68 +1,113 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import AdminDashboard from '../components/AdminDashboard'
 import InventoryCard from '../components/InventoryCard'
 import OrderItem from '../components/OrderItem'
+import { adminAPI } from '../config/api'
 import './AdminPage.css'
 
-// 임시 재고 데이터
-const INITIAL_INVENTORY = [
-  { id: 1, name: '아메리카노 (ICE)', currentStock: 10 },
-  { id: 2, name: '아메리카노 (HOT)', currentStock: 10 },
-  { id: 3, name: '카페라떼', currentStock: 10 }
-]
-
-// 임시 주문 데이터
-const INITIAL_ORDERS = [
-  {
-    id: 1,
-    orderTime: '2025-07-31T13:00:00',
-    items: [
-      { menuName: '아메리카노(ICE)', options: [], quantity: 1 }
-    ],
-    totalPrice: 4000,
-    status: 'pending' // pending, in_progress, completed
-  }
-]
-
 function AdminPage() {
-  const [inventory, setInventory] = useState(INITIAL_INVENTORY)
-  const [orders, setOrders] = useState(INITIAL_ORDERS)
+  const [dashboardStats, setDashboardStats] = useState({
+    totalOrders: 0,
+    pendingOrders: 0,
+    inProgressOrders: 0,
+    completedOrders: 0
+  })
+  const [inventory, setInventory] = useState([])
+  const [orders, setOrders] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  // 데이터 로드
+  useEffect(() => {
+    fetchAllData()
+  }, [])
+
+  const fetchAllData = async () => {
+    try {
+      setLoading(true)
+      await Promise.all([
+        fetchDashboard(),
+        fetchInventory(),
+        fetchOrders()
+      ])
+    } catch (err) {
+      console.error('데이터 로드 실패:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchDashboard = async () => {
+    try {
+      const response = await adminAPI.getDashboard()
+      if (response.success) {
+        setDashboardStats(response.data)
+      }
+    } catch (err) {
+      console.error('대시보드 로드 실패:', err)
+    }
+  }
+
+  const fetchInventory = async () => {
+    try {
+      const response = await adminAPI.getInventory()
+      if (response.success) {
+        setInventory(response.data)
+      }
+    } catch (err) {
+      console.error('재고 로드 실패:', err)
+    }
+  }
+
+  const fetchOrders = async () => {
+    try {
+      const response = await adminAPI.getOrders()
+      if (response.success) {
+        setOrders(response.data)
+      }
+    } catch (err) {
+      console.error('주문 로드 실패:', err)
+    }
+  }
 
   // 재고 변경 처리
-  const handleStockChange = (menuId, change) => {
-    setInventory(prev => 
-      prev.map(item => 
-        item.id === menuId 
-          ? { ...item, currentStock: Math.max(0, item.currentStock + change) }
-          : item
-      )
-    )
+  const handleStockChange = async (menuId, change) => {
+    try {
+      const response = await adminAPI.updateStock(menuId, change)
+      if (response.success) {
+        // 재고 목록 다시 로드
+        await fetchInventory()
+      }
+    } catch (err) {
+      console.error('재고 업데이트 실패:', err)
+      alert(err.message || '재고 업데이트에 실패했습니다.')
+    }
   }
 
   // 주문 상태 변경 처리
-  const handleStatusChange = (orderId, newStatus) => {
-    setOrders(prev =>
-      prev.map(order =>
-        order.id === orderId
-          ? { ...order, status: newStatus }
-          : order
-      )
-    )
+  const handleStatusChange = async (orderId, newStatus) => {
+    try {
+      const response = await adminAPI.updateOrderStatus(orderId, newStatus)
+      if (response.success) {
+        // 주문 목록과 대시보드 다시 로드
+        await Promise.all([fetchOrders(), fetchDashboard()])
+      }
+    } catch (err) {
+      console.error('주문 상태 업데이트 실패:', err)
+      alert(err.message || '주문 상태 업데이트에 실패했습니다.')
+    }
   }
 
-  // 대시보드 통계 계산
-  const getDashboardStats = () => {
-    return {
-      totalOrders: orders.length,
-      pendingOrders: orders.filter(o => o.status === 'pending').length,
-      inProgressOrders: orders.filter(o => o.status === 'in_progress').length,
-      completedOrders: orders.filter(o => o.status === 'completed').length
-    }
+  if (loading) {
+    return (
+      <div className="admin-page">
+        <p className="loading-message">데이터를 불러오는 중...</p>
+      </div>
+    )
   }
 
   return (
     <div className="admin-page">
-      <AdminDashboard stats={getDashboardStats()} />
+      <AdminDashboard stats={dashboardStats} />
 
       <section className="inventory-section">
         <h2 className="section-title">재고 현황</h2>
