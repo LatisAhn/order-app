@@ -1,8 +1,12 @@
 import { useState } from 'react'
+import { API_BASE_URL } from '../config/api'
 import './MenuCard.css'
 
 function MenuCard({ menu, onAddToCart }) {
   const [selectedOptions, setSelectedOptions] = useState([])
+  
+  // 이미지 URL 생성 (백엔드 서버 기준)
+  const imageUrl = menu.imageUrl ? `${API_BASE_URL}${menu.imageUrl}` : null
 
   const handleOptionToggle = (option) => {
     if (selectedOptions.find(o => o.id === option.id)) {
@@ -23,8 +27,8 @@ function MenuCard({ menu, onAddToCart }) {
   return (
     <div className="menu-card">
       <div className="menu-image">
-        {menu.imageUrl ? (
-          <img src={menu.imageUrl} alt={menu.name} className="menu-img" />
+        {imageUrl ? (
+          <img src={imageUrl} alt={menu.name} className="menu-img" />
         ) : (
           <div className="image-placeholder">
             <span>☕</span>

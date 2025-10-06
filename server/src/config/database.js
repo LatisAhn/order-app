@@ -6,6 +6,10 @@ const pool = new Pool({
   database: process.env.DB_NAME || 'cozy_order_db',
   user: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || '',
+  // Render 등 외부 PostgreSQL 사용 시 SSL 필요
+  ssl: process.env.DB_HOST && process.env.DB_HOST.includes('render.com') 
+    ? { rejectUnauthorized: false } 
+    : false,
 });
 
 // Test connection
