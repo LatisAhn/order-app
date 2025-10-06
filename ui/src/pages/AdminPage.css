@@ -4,13 +4,58 @@
   padding: 2rem;
 }
 
-.admin-page h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
   color: #333;
 }
 
-.admin-page p {
-  color: #666;
+/* 재고 현황 섹션 */
+.inventory-section {
+  margin-bottom: 2rem;
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* 주문 현황 섹션 */
+.orders-section {
+  margin-bottom: 2rem;
+}
+
+.orders-container {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.no-orders {
+  text-align: center;
+  color: #999;
+  padding: 2rem;
+  margin: 0;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 992px) {
+  .inventory-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-page {
+    padding: 1rem;
+  }
+
+  .inventory-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 }
 

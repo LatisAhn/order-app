@@ -1,0 +1,112 @@
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  gap: 1rem;
+}
+
+.order-item:last-child {
+  border-bottom: none;
+}
+
+.order-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.order-time {
+  font-size: 0.938rem;
+  color: #666;
+  min-width: 100px;
+}
+
+.order-details {
+  flex: 1;
+  font-size: 0.938rem;
+  color: #333;
+}
+
+.order-price {
+  font-size: 0.938rem;
+  font-weight: 600;
+  color: #333;
+  min-width: 80px;
+  text-align: right;
+}
+
+.order-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.status-btn {
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.status-btn.pending {
+  background-color: #2196F3;
+  color: white;
+}
+
+.status-btn.pending:hover {
+  background-color: #1976D2;
+}
+
+.status-btn.in-progress {
+  background-color: #FF9800;
+  color: white;
+}
+
+.status-btn.in-progress:hover {
+  background-color: #F57C00;
+}
+
+.status-badge {
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-badge.completed {
+  background-color: #4CAF50;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .order-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .order-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .order-price {
+    text-align: left;
+  }
+
+  .order-actions {
+    width: 100%;
+  }
+
+  .status-btn {
+    width: 100%;
+  }
+}
+
