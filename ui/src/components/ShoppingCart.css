@@ -1,0 +1,149 @@
+.shopping-cart {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.cart-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  color: #333;
+}
+
+.cart-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  min-height: 200px;
+}
+
+.cart-items-section {
+  border-right: 1px solid #e0e0e0;
+  padding-right: 2rem;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.empty-cart {
+  text-align: center;
+  color: #999;
+  padding: 2rem 0;
+  margin: 0;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+.cart-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.cart-item-name {
+  color: #333;
+  font-size: 0.938rem;
+  font-weight: 500;
+}
+
+.cart-item-options {
+  color: #666;
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.cart-item-quantity {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.cart-item-price {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.cart-summary {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.cart-total {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.total-label {
+  font-size: 1rem;
+  color: #666;
+}
+
+.total-amount {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2196F3;
+}
+
+.order-btn {
+  padding: 1rem 3rem;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+  max-width: 200px;
+}
+
+.order-btn:hover {
+  background-color: #1976D2;
+}
+
+.order-btn:active {
+  background-color: #0D47A1;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .cart-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .cart-items-section {
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+    padding-right: 0;
+    padding-bottom: 1.5rem;
+  }
+
+  .order-btn {
+    max-width: none;
+  }
+}
+
