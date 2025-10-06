@@ -116,6 +116,11 @@ function OrderPage() {
     setCartItems([])
   }
 
+  const handleRemoveItem = (index) => {
+    const newCartItems = cartItems.filter((_, i) => i !== index)
+    setCartItems(newCartItems)
+  }
+
   return (
     <div className="order-page">
       <div className="menu-grid">
@@ -131,6 +136,7 @@ function OrderPage() {
       <ShoppingCart 
         cartItems={cartItems} 
         onOrder={handleOrder}
+        onRemoveItem={handleRemoveItem}
       />
     </div>
   )

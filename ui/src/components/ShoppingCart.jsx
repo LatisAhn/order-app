@@ -1,6 +1,6 @@
 import './ShoppingCart.css'
 
-function ShoppingCart({ cartItems, onOrder }) {
+function ShoppingCart({ cartItems, onOrder, onRemoveItem }) {
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => total + item.totalPrice, 0)
   }
@@ -13,6 +13,12 @@ function ShoppingCart({ cartItems, onOrder }) {
     if (window.confirm('주문하시겠습니까?')) {
       onOrder()
       alert('주문이 완료되었습니다!')
+    }
+  }
+
+  const handleRemove = (index) => {
+    if (window.confirm('이 항목을 삭제하시겠습니까?')) {
+      onRemoveItem(index)
     }
   }
 
@@ -38,6 +44,13 @@ function ShoppingCart({ cartItems, onOrder }) {
                     <span className="cart-item-quantity">x {item.quantity}</span>
                   </div>
                   <span className="cart-item-price">{item.totalPrice.toLocaleString()}원</span>
+                  <button 
+                    className="remove-item-btn" 
+                    onClick={() => handleRemove(index)}
+                    aria-label="삭제"
+                  >
+                    ✕
+                  </button>
                 </div>
               ))}
             </div>
