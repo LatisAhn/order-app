@@ -23,9 +23,13 @@ function MenuCard({ menu, onAddToCart }) {
   return (
     <div className="menu-card">
       <div className="menu-image">
-        <div className="image-placeholder">
-          <span>☕</span>
-        </div>
+        {menu.imageUrl ? (
+          <img src={menu.imageUrl} alt={menu.name} className="menu-img" />
+        ) : (
+          <div className="image-placeholder">
+            <span>☕</span>
+          </div>
+        )}
       </div>
       <div className="menu-info">
         <h3 className="menu-name">{menu.name}</h3>
